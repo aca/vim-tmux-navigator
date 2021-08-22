@@ -94,7 +94,9 @@ function! s:TmuxAwareNavigate(direction)
   let nr = winnr()
   let tmux_last_pane = (a:direction == 'p' && s:tmux_is_last_pane)
   if !tmux_last_pane
-    call s:VimNavigate(a:direction)
+    if luaeval("require('zen-mode.view').is_open()") == v:null
+      call s:VimNavigate(a:direction)
+    end
   endif
   let at_tab_page_edge = (nr == winnr())
   " Forward the switch panes command to tmux if:
